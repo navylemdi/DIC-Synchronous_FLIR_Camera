@@ -1,2 +1,2 @@
 # DIC-Synchronous_FLIR_Camera
-Some code to manage multiple cameras
+Some code to manage multiple FLIR cameras
