@@ -1,28 +1,3 @@
-# coding=utf-8
-# =============================================================================
-# Copyright (c) 2001-2021 FLIR Systems, Inc. All Rights Reserved.
-#
-# This software is the confidential and proprietary information of FLIR
-# Integrated Imaging Solutions, Inc. ("Confidential Information"). You
-# shall not disclose such Confidential Information and shall use it only in
-# accordance with the terms of the license agreement you entered into
-# with FLIR Integrated Imaging Solutions, Inc. (FLIR).
-#
-# FLIR MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
-# SOFTWARE, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-# PURPOSE, OR NON-INFRINGEMENT. FLIR SHALL NOT BE LIABLE FOR ANY DAMAGES
-# SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
-# THIS SOFTWARE OR ITS DERIVATIVES.
-# =============================================================================
-#
-# This AcquireAndDisplay.py shows how to get the image data, and then display images in a GUI.
-# This example relies on information provided in the ImageChannelStatistics.py example.
-#
-# This example demonstrates how to display images represented as numpy arrays.
-# Currently, this program is limited to single camera use.
-# NOTE: keyboard and matplotlib must be installed on Python interpreter prior to running this example.
-
 import os
 import PySpin
 import matplotlib.pyplot as plt

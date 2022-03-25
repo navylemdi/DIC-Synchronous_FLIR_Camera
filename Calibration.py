@@ -1,28 +1,3 @@
-
-# ============================================================================
-# Copyright (c) 2001-2021 FLIR Systems, Inc. All Rights Reserved.
-
-# This software is the confidential and proprietary information of FLIR
-# Integrated Imaging Solutions, Inc. ("Confidential Information"). You
-# shall not disclose such Confidential Information and shall use it only in
-# accordance with the terms of the license agreement you entered into
-# with FLIR Integrated Imaging Solutions, Inc. (FLIR).
-#
-# FLIR MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
-# SOFTWARE, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-# PURPOSE, OR NON-INFRINGEMENT. FLIR SHALL NOT BE LIABLE FOR ANY DAMAGES
-# SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
-# THIS SOFTWARE OR ITS DERIVATIVES.
-# ============================================================================
-#
-# AcquisitionMultipleCamera.py shows how to capture images from
-# multiple cameras simultaneously. It relies on information provided in the
-# Enumeration, Acquisition, and NodeMapInfo examples.
-#
-# This example reads similarly to the Acquisition example,
-# except that loops are used to allow for simultaneous acquisitions.
-
 #https://github.com/SocCog-Team/Multiple-Cameras-Acquisition/blob/master/SpinnakerCamera.py
 
 import os
@@ -36,8 +11,6 @@ GAIN = 38 #Gain of the cameras
 EXPOSURE_TIME = 10000 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
 FILEPATH = ['/Users/yvan/BD200_18_03_2022/Batch2/Calibration/Cam1', '/Users/yvan/BD200_18_03_2022/Batch2/Calibration/Cam2']
 FORMAT = '.tif'
-#FILENAME = ['Cam1', 'Cam2']
-
 
 def acquire_images(cam_list):
     """
