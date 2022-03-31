@@ -139,10 +139,10 @@ def acquire_and_display_images(cam, nodemap, nodemap_tldevice, i):
 
                     # Getting the image data as a numpy array
                     image_data = image_result.GetNDArray()
-
+                    
                     # Draws an image on the current figure
                     plt.imshow(image_data, cmap='gray')
-
+                    plt.scatter(image_data.shape[1]/2, image_data.shape[0]/2, s=2, color='red', marker = '+', )
                     # Interval in plt.pause(interval) determines how fast the images are displayed in a GUI
                     # Interval is in seconds.
                     plt.pause(0.0001)
