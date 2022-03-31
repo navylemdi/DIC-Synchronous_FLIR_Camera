@@ -1,6 +1,8 @@
 #https://github.com/SocCog-Team/Multiple-Cameras-Acquisition/blob/master/SpinnakerCamera.py
 
+import subprocess
 import os
+import yaml
 import PySpin
 import sys
 import time
@@ -11,7 +13,18 @@ GAIN = 27 #Gain of the cameras
 EXPOSURE_TIME = 5000 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
 FILEPATH = ['/Users/yvan/BD200_28_03_2022/Batch2_f8_35mm/Cam1', '/Users/yvan/BD200_28_03_2022/Batch2_f8_35mm/Cam2']
 FORMAT = '.tif'
+APERTURE = 'f\8'
 
+def save_data(filepath):
+    Filepathyaml = os.path.split(FILEPATH[0])[0]
+    os.chdir(Filepathyaml)
+    bashcommand = 'touch CaptureData.yaml'
+    process = subprocess.Popen(bashcommand.split(), stdout=subprocess.PIPE)
+    output, error = process.communicate()
+    data = dict(Camera_settings = {'Number of images' : NUM_IMAGES, 'Gain' : GAIN, 'Exposure time (ms)': EXPOSURE_TIME, 'Aperture' : APERTURE, 'File path': FILEPATH, 'Format': FORMAT})
+    with open(Filepathyaml+'/'+'CaptureData.yaml', 'w') as yaml_file:
+            yaml.dump(data, yaml_file, default_flow_style=False)
+            print(f"Save data in {Filepathyaml}")
 
 def acquire_images(cam_list):
     """
@@ -298,7 +311,9 @@ def main():
 
     #Create folders that doesn't exist yet
     create_folders()
-
+    
+    #Save data of acquisition
+    save_data(FILEPATH)
     # Get current library version
     version = system.GetLibraryVersion()
     print('Library version: %d.%d.%d.%d' % (version.major, version.minor, version.type, version.build))
