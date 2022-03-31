@@ -4,3 +4,5 @@ os
 sys
 PySpin
 keyboard
+subprocess
+yaml
