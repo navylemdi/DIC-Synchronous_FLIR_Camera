@@ -1,15 +1,17 @@
 #https://github.com/SocCog-Team/Multiple-Cameras-Acquisition/blob/master/SpinnakerCamera.py
+
 import os
 import PySpin
 import sys
 import time
 import matplotlib.pyplot as plt
 
-NUM_IMAGES = 5  # number of images to grab
-GAIN = 38 #Gain of the cameras
-EXPOSURE_TIME = 10000 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
-FILEPATH = ['/Users/yvan/Test/Tiff2cam/Cam1', '/Users/yvan/Test/Tiff2cam/Cam2']
+NUM_IMAGES = 100  # number of images to grab
+GAIN = 27 #Gain of the cameras
+EXPOSURE_TIME = 5000 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
+FILEPATH = ['/Users/yvan/BD200_28_03_2022/Batch2_f8_35mm/Cam1', '/Users/yvan/BD200_28_03_2022/Batch2_f8_35mm/Cam2']
 FORMAT = '.tif'
+
 
 def acquire_images(cam_list):
     """

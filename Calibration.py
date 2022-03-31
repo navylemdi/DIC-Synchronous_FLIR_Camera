@@ -6,16 +6,14 @@ import sys
 import time
 import matplotlib.pyplot as plt
 
-NUM_IMAGES = 30  # number of images to grab
-GAIN = 38 #Gain of the cameras
-EXPOSURE_TIME = 10000 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
-FILEPATH = ['/Users/yvan/BD200_18_03_2022/Batch2/Calibration/Cam1', '/Users/yvan/BD200_18_03_2022/Batch2/Calibration/Cam2']
+NUM_IMAGES = 50  # number of images to grab
+GAIN = 27 #Gain of the cameras
+EXPOSURE_TIME = 5000 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
+FILEPATH = ['/Users/yvan/BD200_28_03_2022/Batch1_f8_35mm/Chessboard/Cam1', '/Users/yvan/BD200_28_03_2022/Batch1_f8_35mm/Chessboard/Cam2']
 FORMAT = '.tif'
 
 def acquire_images(cam_list):
     """
-    This function acquires and saves 10 images from each device.
-
     :param cam_list: List of cameras
     :type cam_list: CameraList
     :return: True if successful, False otherwise.
@@ -84,7 +82,7 @@ def acquire_images(cam_list):
                         print('Camera %d serial number set to %s...' % (i, device_serial_number))
 
                     # Retrieve next received image and ensure image completion
-                    image_result = cam.GetNextImage()
+                    image_result = cam.GetNextImage(500)
 
                     if image_result.IsIncomplete():
                         print('Image incomplete with image status %d ... \n' % image_result.GetImageStatus())
@@ -137,7 +135,6 @@ def acquire_images(cam_list):
         # GetByIndex(); this is an alternative to retrieving cameras as
         # CameraPtr objects that can be quick and easy for small tasks.
         for cam in cam_list:
-
             # End acquisition
             cam.EndAcquisition()
 
@@ -299,7 +296,7 @@ def main():
     # Get current library version
     version = system.GetLibraryVersion()
     print('Library version: %d.%d.%d.%d' % (version.major, version.minor, version.type, version.build))
-    result =True
+    result = True
     # Retrieve list of cameras from the system
     cam_list = system.GetCameras()
     

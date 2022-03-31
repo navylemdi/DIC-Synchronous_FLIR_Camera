@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import sys
 import keyboard
 import time
+import numba 
 
 global continue_recording
 continue_recording = True
@@ -217,7 +218,7 @@ def run_single_camera(cam, i):
 
     return result
 
-
+@numba.jit
 def main():
     """
     Example entry point; notice the volume of data that the logging event handler
@@ -258,6 +259,7 @@ def main():
         return False
 
     # Run example on each camera
+    
     for i, cam in enumerate(cam_list):
 
         print('Running example for camera %d...' % i)
