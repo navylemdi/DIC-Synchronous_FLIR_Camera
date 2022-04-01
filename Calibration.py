@@ -9,10 +9,10 @@ import sys
 import time
 import matplotlib.pyplot as plt
 
-NUM_IMAGES = 50  # number of images to grab
-GAIN = 27 #Gain of the cameras
-EXPOSURE_TIME = 5000 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
-FILEPATH = ['/Users/yvan/BD200_28_03_2022/Batch1_f8_35mm/Chessboard/Cam1', '/Users/yvan/BD200_28_03_2022/Batch1_f8_35mm/Chessboard/Cam2']
+NUM_IMAGES = 10  # number of images to grab
+GAIN = 42.89 #Gain of the cameras
+EXPOSURE_TIME = 13181 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
+FILEPATH = ['/Users/yvan/BD200_1_04_2022/Calibration/Cam1', '/Users/yvan/BD200_1_04_2022/Calibration/Cam2']
 FORMAT = '.tif'
 APERTURE = 'f\8'
 
@@ -86,7 +86,10 @@ def acquire_images(cam_list):
         # through the cameras; otherwise, all images will be grabbed from a
         # single camera before grabbing any images from another.
         for n in range(NUM_IMAGES):
-            input('Press ENTER to acquire')
+            time.sleep(0.05)
+            #input('Press ENTER to acquire')
+            #for i, cam in enumerate(cam_list):
+            #    cam.TriggerMode.SetValue(PySpin.TriggerMode_On)
             for i, cam in enumerate(cam_list):
                 try:
                     # Retrieve device serial number for filename
@@ -97,7 +100,7 @@ def acquire_images(cam_list):
                         print('Camera %d serial number set to %s...' % (i, device_serial_number))
 
                     # Retrieve next received image and ensure image completion
-                    image_result = cam.GetNextImage(500)
+                    image_result = cam.GetNextImage()
 
                     if image_result.IsIncomplete():
                         print('Image incomplete with image status %d ... \n' % image_result.GetImageStatus())
@@ -138,7 +141,7 @@ def acquire_images(cam_list):
                 except PySpin.SpinnakerException as ex:
                     print('Error: %s' % ex)
                     result = False
-
+                #cam.TriggerMode.SetValue(PySpin.TriggerMode_Off)
         # End acquisition for each camera
         #
         # *** NOTES ***
@@ -244,11 +247,11 @@ def run_multiple_cameras(cam_list, gain, exposure_time):
             # Initialize camera
             cam.Init()
 
-
             cam.TriggerMode.SetValue(PySpin.TriggerMode_Off)
             cam.TriggerSource.SetValue(PySpin.TriggerSource_Line3)
             cam.TriggerActivation.SetValue(PySpin.TriggerActivation_RisingEdge)
             cam.TriggerMode.SetValue(PySpin.TriggerMode_On)
+            
 
             cam.GainAuto.SetValue(PySpin.GainAuto_Off)
             cam.Gain.SetValue(gain)

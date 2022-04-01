@@ -8,10 +8,10 @@ import sys
 import time
 import matplotlib.pyplot as plt
 
-NUM_IMAGES = 100  # number of images to grab
-GAIN = 27 #Gain of the cameras
-EXPOSURE_TIME = 5000 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
-FILEPATH = ['/Users/yvan/BD200_28_03_2022/Batch2_f8_35mm/Cam1', '/Users/yvan/BD200_28_03_2022/Batch2_f8_35mm/Cam2']
+NUM_IMAGES = 25  # number of images to grab
+GAIN = 42.89 #Gain of the cameras MIN = 0 MAX = 47.994267
+EXPOSURE_TIME = 13181 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
+FILEPATH = ['/Users/yvan/BD200_1_04_2022/Test1/Cam1', '/Users/yvan/BD200_1_04_2022/Test1/Cam2']
 FORMAT = '.tif'
 APERTURE = 'f\8'
 
@@ -247,7 +247,7 @@ def run_multiple_cameras(cam_list, gain, exposure_time):
             # Initialize camera
             cam.Init()
 
-
+            
             cam.TriggerMode.SetValue(PySpin.TriggerMode_Off)
             cam.TriggerSource.SetValue(PySpin.TriggerSource_Line3)
             cam.TriggerActivation.SetValue(PySpin.TriggerActivation_RisingEdge)

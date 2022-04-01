@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import sys
 import keyboard
 import time
-import numba 
+
 
 global continue_recording
 continue_recording = True
@@ -78,7 +78,9 @@ def acquire_and_display_images(cam, nodemap, nodemap_tldevice, i):
         node_acquisition_mode.SetIntValue(acquisition_mode_continuous)
 
         print('Acquisition mode set to continuous...')
-
+        cam.TriggerMode.SetValue(PySpin.TriggerMode_Off)
+        cam.GainAuto.SetValue(PySpin.GainAuto_Continuous)
+        cam.ExposureAuto.SetValue(PySpin.ExposureAuto_Continuous)
         #  Begin acquiring images
         #
         #  *** NOTES ***
@@ -142,14 +144,16 @@ def acquire_and_display_images(cam, nodemap, nodemap_tldevice, i):
                     
                     # Draws an image on the current figure
                     plt.imshow(image_data, cmap='gray')
-                    plt.scatter(image_data.shape[1]/2, image_data.shape[0]/2, s=2, color='red', marker = '+', )
+                    plt.scatter(image_data.shape[1]/2, image_data.shape[0]/2, s=1, color='red', marker = '+', linewidths=320) #Create rhe red cross in the center of the image
                     # Interval in plt.pause(interval) determines how fast the images are displayed in a GUI
                     # Interval is in seconds.
                     plt.pause(0.0001)
 
                     # Clear current reference of a figure. This will improve display speed significantly
                     plt.clf()
-                    
+                    sys.stdout.write('\n Camera ' + str(i) + ' gain set at ' + str(cam.Gain.GetValue())+'\n Camera '+ str(i) + ' exposure time set at ' + str(cam.ExposureTime.GetValue()))
+
+                    #print('Camera ',i, ' exposure time set at ' , cam.ExposureTime.GetValue())
                     # If user presses enter, close the program
                     if keyboard.is_pressed('ENTER'):
                         print('Program is closing...')
@@ -157,6 +161,7 @@ def acquire_and_display_images(cam, nodemap, nodemap_tldevice, i):
                         # Close figure
                         plt.close('all')             
                         input('Done! Press Enter to exit...')
+                        
                         continue_recording=False                        
 
                 #  Release image
@@ -218,7 +223,6 @@ def run_single_camera(cam, i):
 
     return result
 
-@numba.jit
 def main():
     """
     Example entry point; notice the volume of data that the logging event handler
@@ -265,10 +269,10 @@ def main():
         print('Running example for camera %d...' % i)
 
         result &= run_single_camera(cam, i)
-        print('Camera %d example complete... \n' % i)
+        print('\n Camera %d example complete... \n' % i)
 
     # Release reference to camera
-    # NOTE: Unlike the C++ examples, we cannot rely on pointer objects being automatically
+    # Note: Unlike the C++ examples, we cannot rely on pointer objects being automatically
     # cleaned up when going out of scope.
     # The usage of del is preferred to assigning the variable to None.
     del cam
