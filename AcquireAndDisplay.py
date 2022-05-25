@@ -78,9 +78,7 @@ def acquire_and_display_images(cam, nodemap, nodemap_tldevice, i):
         node_acquisition_mode.SetIntValue(acquisition_mode_continuous)
 
         print('Acquisition mode set to continuous...')
-        cam.TriggerMode.SetValue(PySpin.TriggerMode_Off)
-        cam.GainAuto.SetValue(PySpin.GainAuto_Continuous)
-        cam.ExposureAuto.SetValue(PySpin.ExposureAuto_Continuous)
+
         #  Begin acquiring images
         #
         #  *** NOTES ***
@@ -111,7 +109,7 @@ def acquire_and_display_images(cam, nodemap, nodemap_tldevice, i):
         print('Press enter to close the program..')
 
         # Figure(1) is default so you can omit this line. Figure(0) will create a new window every time program hits this line
-        fig = plt.figure(i)
+        fig = plt.figure(1)
 
         # Close the GUI when close event happens
         fig.canvas.mpl_connect('close_event', handle_close)
@@ -144,6 +142,7 @@ def acquire_and_display_images(cam, nodemap, nodemap_tldevice, i):
                     
                     # Draws an image on the current figure
                     plt.imshow(image_data, cmap='gray')
+                    plt.text(100,100, 'Camera ' + str(device_serial_number), fontfamily='serif', fontsize=10, color='r')
                     plt.scatter(image_data.shape[1]/2, image_data.shape[0]/2, s=1, color='red', marker = '+', linewidths=320) #Create rhe red cross in the center of the image
                     # Interval in plt.pause(interval) determines how fast the images are displayed in a GUI
                     # Interval is in seconds.
@@ -151,9 +150,9 @@ def acquire_and_display_images(cam, nodemap, nodemap_tldevice, i):
 
                     # Clear current reference of a figure. This will improve display speed significantly
                     plt.clf()
-                    sys.stdout.write('\n Camera ' + str(i) + ' gain set at ' + str(cam.Gain.GetValue())+'\n Camera '+ str(i) + ' exposure time set at ' + str(cam.ExposureTime.GetValue()))
+                    
+                    print('Camera ' + str(i) + ' gain at ' + str(cam.Gain.GetValue())+'   Camera '+ str(i) + ' exposure time at ' + str(cam.ExposureTime.GetValue()), end='\r')
 
-                    #print('Camera ',i, ' exposure time set at ' , cam.ExposureTime.GetValue())
                     # If user presses enter, close the program
                     if keyboard.is_pressed('ENTER'):
                         print('Program is closing...')
@@ -207,10 +206,11 @@ def run_single_camera(cam, i):
 
         # Initialize camera
         cam.Init()
-
         # Retrieve GenICam nodemap
         nodemap = cam.GetNodeMap()
-
+        cam.TriggerMode.SetValue(PySpin.TriggerMode_Off)
+        cam.GainAuto.SetValue(PySpin.GainAuto_Continuous)
+        cam.ExposureAuto.SetValue(PySpin.ExposureAuto_Continuous)
         # Acquire images
         result &= acquire_and_display_images(cam, nodemap, nodemap_tldevice, i)
 

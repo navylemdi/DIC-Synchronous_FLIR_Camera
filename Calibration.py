@@ -10,9 +10,9 @@ import time
 import matplotlib.pyplot as plt
 
 NUM_IMAGES = 10  # number of images to grab
-GAIN = 42.89 #Gain of the cameras
-EXPOSURE_TIME = 13181 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
-FILEPATH = ['/Users/yvan/BD200_1_04_2022/Calibration/Cam1', '/Users/yvan/BD200_1_04_2022/Calibration/Cam2']
+GAIN = 16 #Gain of the cameras
+EXPOSURE_TIME = 13181.507587432861 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
+FILEPATH = ['.Test/Calibration/Cam1', './Test/Calibration/Cam2']
 FORMAT = '.tif'
 APERTURE = 'f\8'
 
@@ -53,6 +53,7 @@ def acquire_images(cam_list):
 
             # Set acquisition mode to continuous
             node_acquisition_mode = PySpin.CEnumerationPtr(cam.GetNodeMap().GetNode('AcquisitionMode'))
+            
             if not PySpin.IsAvailable(node_acquisition_mode) or not PySpin.IsWritable(node_acquisition_mode):
                 print('Unable to set acquisition mode to continuous (node retrieval; camera %d). Aborting... \n' % i)
                 return False
@@ -86,10 +87,8 @@ def acquire_images(cam_list):
         # through the cameras; otherwise, all images will be grabbed from a
         # single camera before grabbing any images from another.
         for n in range(NUM_IMAGES):
-            time.sleep(0.05)
-            #input('Press ENTER to acquire')
-            #for i, cam in enumerate(cam_list):
-            #    cam.TriggerMode.SetValue(PySpin.TriggerMode_On)
+            #time.sleep(0.05)
+            input('Press ENTER to acquire')
             for i, cam in enumerate(cam_list):
                 try:
                     # Retrieve device serial number for filename
@@ -123,6 +122,7 @@ def acquire_images(cam_list):
                         print('Camera ',i, ' exposure time set at ' , cam.ExposureTime.GetValue())
                         # Draws an image on the current figure
                         plt.imshow(image_data, cmap='gray')
+                        plt.text(100,100, 'Camera ' + str(device_serial_number), fontfamily='serif', fontsize=10, color='r')
 
                         # Interval in plt.pause(interval) determines how fast the images are displayed in a GUI
                         # Interval is in seconds.
@@ -246,13 +246,20 @@ def run_multiple_cameras(cam_list, gain, exposure_time):
 
             # Initialize camera
             cam.Init()
-
+            
+            #Gestion du mode Trigger des cameras
             cam.TriggerMode.SetValue(PySpin.TriggerMode_Off)
             cam.TriggerSource.SetValue(PySpin.TriggerSource_Line3)
             cam.TriggerActivation.SetValue(PySpin.TriggerActivation_RisingEdge)
             cam.TriggerMode.SetValue(PySpin.TriggerMode_On)
             
+            #Gestion du buffer des cameras
+            s_node_map = cam.GetTLStreamNodeMap()
+            handling_mode = PySpin.CEnumerationPtr(s_node_map.GetNode('StreamBufferHandlingMode'))
+            handling_mode_entry = handling_mode.GetEntryByName('NewestOnly')
+            handling_mode.SetIntValue(handling_mode_entry.GetValue())
 
+            #Gestion des pqrqmetres d'acquisition des cameras
             cam.GainAuto.SetValue(PySpin.GainAuto_Off)
             cam.Gain.SetValue(gain)
             cam.ExposureAuto.SetValue(PySpin.ExposureAuto_Off)

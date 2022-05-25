@@ -8,10 +8,10 @@ import sys
 import time
 import matplotlib.pyplot as plt
 
-NUM_IMAGES = 25  # number of images to grab
-GAIN = 42.89 #Gain of the cameras MIN = 0 MAX = 47.994267
+NUM_IMAGES = 15  # number of images to grab
+GAIN = 16 #Gain of the cameras MIN = 0 MAX = 47.994267
 EXPOSURE_TIME = 13181 #Exposure time of the cameras in ms  MIN = 6.258488 MAX = 13181.507587432861
-FILEPATH = ['/Users/yvan/BD200_1_04_2022/Test1/Cam1', '/Users/yvan/BD200_1_04_2022/Test1/Cam2']
+FILEPATH = ['./Test/Cam1', './Test/Cam2']
 FORMAT = '.tif'
 APERTURE = 'f\8'
 
@@ -123,7 +123,7 @@ def acquire_images(cam_list):
                         
                         # Draws an image on the current figure
                         plt.imshow(image_data, cmap='gray')
-
+                        plt.text(100,100, 'Camera ' + str(device_serial_number), fontfamily='serif', fontsize=10, color='r')
                         # Interval in plt.pause(interval) determines how fast the images are displayed in a GUI
                         # Interval is in seconds.
                         plt.pause(0.001)
@@ -247,12 +247,22 @@ def run_multiple_cameras(cam_list, gain, exposure_time):
             # Initialize camera
             cam.Init()
 
-            
+            #Gestion du mode Trigger des cameras            
             cam.TriggerMode.SetValue(PySpin.TriggerMode_Off)
             cam.TriggerSource.SetValue(PySpin.TriggerSource_Line3)
             cam.TriggerActivation.SetValue(PySpin.TriggerActivation_RisingEdge)
             cam.TriggerMode.SetValue(PySpin.TriggerMode_On)
 
+            #Gestion du buffer des cameras
+            
+            s_node_map = cam.GetTLStreamNodeMap()
+            handling_mode = PySpin.CEnumerationPtr(s_node_map.GetNode('StreamBufferHandlingMode'))
+            #print(handling_mode.GetAccessMode())
+            handling_mode_entry = handling_mode.GetEntryByName('OldestFirstOverwrite')
+            handling_mode.SetIntValue(handling_mode_entry.GetValue())
+            
+
+            #Gestion des pqrqmetres d'acquisition des cameras
             cam.GainAuto.SetValue(PySpin.GainAuto_Off)
             cam.Gain.SetValue(gain)
             cam.ExposureAuto.SetValue(PySpin.ExposureAuto_Off)
